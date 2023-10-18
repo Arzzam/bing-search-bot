@@ -7,7 +7,10 @@ function App() {
   const [data, setData] = useState<string[]>([]);
 
   async function fetchSearchQueries() {
-    const searchQueries = await getAllSearchQueries();
+    const searchQueriesObject = await getAllSearchQueries();
+    const searchQueries: string[] = searchQueriesObject.map(
+      (query) => query.search_query
+    );
     setData(searchQueries);
   }
 
@@ -15,8 +18,11 @@ function App() {
     fetchSearchQueries();
   }, []);
 
+  console.log("data", data);
+
   function getRandomSearchQuery(): string {
     const randomIndex = Math.floor(Math.random() * data.length);
+    console.log("data random index", data[randomIndex]);
     return data[randomIndex];
   }
 
@@ -35,6 +41,12 @@ function App() {
           getRandomSearchQuery()
         )}`;
         window.open(searchUrl, "_blank");
+        // if (newTab) {
+        //   newTab.focus();
+        //   newTab.onfocus = () => {
+        //     newTab.close();
+        //   };
+        // }
       }, i * delayTimeInt * 1000);
     }
   };

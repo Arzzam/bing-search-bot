@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 const supabaseUrl: string = import.meta.env.VITE_SUPABASE_URL || "";
@@ -7,14 +8,13 @@ const supabase: SupabaseClient = createClient(supabaseUrl, supabaseKey);
 const tableName: string = "search_queries";
 const col_name: string = "search_query";
 
-async function getAllSearchQueries(): Promise<string[]> {
+async function getAllSearchQueries(): Promise<any[]> {
   try {
     const { data, error } = await supabase.from(tableName).select(col_name);
     if (error) throw error;
     if (data) {
       return data || [];
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error("Error fetching search queries:", error.message);
     return [];
