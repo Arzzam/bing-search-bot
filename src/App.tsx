@@ -18,14 +18,13 @@ function App() {
     fetchSearchQueries();
   }, []);
 
-  console.log("data", data);
-
   function getRandomSearchQuery(): string {
     const randomIndex = Math.floor(Math.random() * data.length);
     console.log("data random index", data[randomIndex]);
     return data[randomIndex];
   }
 
+  let searchTimeouts: NodeJS.Timeout[] = [];
   const scheduleSearches = () => {
     if (!numSearches || !delayTime) {
       alert("Please enter both number of searches and delay time.");
@@ -35,8 +34,12 @@ function App() {
     const numSearchesInt: number = parseInt(numSearches, 10);
     const delayTimeInt: number = parseInt(delayTime, 10);
 
+    searchTimeouts.forEach((timeoutId) => {
+      clearTimeout(timeoutId);
+    });
+
     for (let i = 0; i < numSearchesInt; i++) {
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(
           getRandomSearchQuery()
         )}`;
@@ -48,7 +51,16 @@ function App() {
         //   };
         // }
       }, i * delayTimeInt * 1000);
+      searchTimeouts.push(timeoutId);
     }
+  };
+
+  const stopSearches = () => {
+    alert("Stopping searches");
+    searchTimeouts.forEach((timeoutId) => {
+      clearTimeout(timeoutId);
+    });
+    searchTimeouts = [];
   };
 
   return (
@@ -69,13 +81,16 @@ function App() {
         type="number"
         id="delayTime"
         value={delayTime}
-        min={1}
-        max={30}
+        min={4}
+        max={20}
         onChange={(e) => setDelayTime(e.target.value)}
         required
       />
       <br />
-      <button onClick={scheduleSearches}>Start Searches</button>
+      <div className="button-grp">
+        <button onClick={scheduleSearches}>Start Searches</button>
+        <button onClick={stopSearches}>Stop Searches</button>
+      </div>
     </div>
   );
 }
