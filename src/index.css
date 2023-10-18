@@ -51,3 +51,10 @@ button {
 button:hover {
   background-color: #45a049;
 }
+
+.button-grp {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  flex-direction: row;
+}
