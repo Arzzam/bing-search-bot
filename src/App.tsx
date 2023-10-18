@@ -1,35 +1,71 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import { getAllSearchQueries } from "./client";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [numSearches, setNumSearches] = useState<string>("10");
+  const [delayTime, setDelayTime] = useState<string>("5");
+  const [data, setData] = useState<string[]>([]);
+
+  async function fetchSearchQueries() {
+    const searchQueries = await getAllSearchQueries();
+    setData(searchQueries);
+  }
+
+  useEffect(() => {
+    fetchSearchQueries();
+  }, []);
+
+  function getRandomSearchQuery(): string {
+    const randomIndex = Math.floor(Math.random() * data.length);
+    return data[randomIndex];
+  }
+
+  const scheduleSearches = () => {
+    if (!numSearches || !delayTime) {
+      alert("Please enter both number of searches and delay time.");
+      return;
+    }
+
+    const numSearchesInt: number = parseInt(numSearches, 10);
+    const delayTimeInt: number = parseInt(delayTime, 10);
+
+    for (let i = 0; i < numSearchesInt; i++) {
+      setTimeout(() => {
+        const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(
+          getRandomSearchQuery()
+        )}`;
+        window.open(searchUrl, "_blank");
+      }, i * delayTimeInt * 1000);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      <label htmlFor="numSearches">Number of Searches:</label>
+      <input
+        type="number"
+        id="numSearches"
+        value={numSearches}
+        min={1}
+        max={30}
+        onChange={(e) => setNumSearches(e.target.value)}
+        required
+      />
+      <br />
+      <label htmlFor="delayTime">Delay Time (in seconds):</label>
+      <input
+        type="number"
+        id="delayTime"
+        value={delayTime}
+        min={1}
+        max={30}
+        onChange={(e) => setDelayTime(e.target.value)}
+        required
+      />
+      <br />
+      <button onClick={scheduleSearches}>Start Searches</button>
+    </div>
+  );
 }
 
-export default App
+export default App;
