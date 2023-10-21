@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -14,32 +18,9 @@
   -webkit-text-size-adjust: 100%;
 }
 
-
-.App {
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-}
-
-label {
-  margin-bottom: 10px;
-}
-
-input {
-  width: 200px;
-  padding: 8px;
-  margin-bottom: 15px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
 button {
-  background-color: #4caf50;
-  color: white;
+  background-color: rgb(253 186 116 / 1); 
+  color: #242424;
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
@@ -49,7 +30,7 @@ button {
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #ff982a;
 }
 
 .button-grp {
