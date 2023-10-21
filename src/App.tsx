@@ -26,6 +26,8 @@ function App() {
   }
 
   let searchTimeouts: NodeJS.Timeout[] = [];
+  let newTab: Window | null;
+
   const scheduleSearches = () => {
     if (!numSearches || !delayTime) {
       alert('Please enter both number of searches and delay time.');
@@ -44,15 +46,8 @@ function App() {
         const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(
           getRandomSearchQuery()
         )}`;
-        const newTab = window.open(searchUrl, '_blank');
-        if (newTab) {
-          newTab.focus();
-          newTab.onfocus = () => {
-            setTimeout(() => {
-              newTab.close();
-            }, delayTimeInt * 1000 - 1);
-          };
-        }
+        newTab?.close();
+        newTab = window.open(searchUrl, '_blank');
       }, i * delayTimeInt * 1000);
       searchTimeouts.push(timeoutId);
     }
@@ -64,6 +59,30 @@ function App() {
       clearTimeout(timeoutId);
     });
     searchTimeouts = [];
+  };
+
+  const handleNumSearchesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value === '') {
+      setNumSearches('');
+    } else {
+      const num = parseInt(value, 10);
+      if (num >= 1 && num <= 30) {
+        setNumSearches(value);
+      }
+    }
+  };
+
+  const handleDelayTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value === '') {
+      setDelayTime('');
+    } else {
+      const num = parseInt(value, 10);
+      if (num >= 4 && num <= 20) {
+        setDelayTime(value);
+      }
+    }
   };
 
   return (
@@ -78,7 +97,7 @@ function App() {
         value={numSearches}
         min={1}
         max={30}
-        onChange={(e) => setNumSearches(e.target.value)}
+        onChange={handleNumSearchesChange}
         required
       />
       <Input
@@ -87,7 +106,7 @@ function App() {
         value={delayTime}
         min={4}
         max={20}
-        onChange={(e) => setDelayTime(e.target.value)}
+        onChange={handleDelayTimeChange}
         required
       />
       <div className='button-grp'>
