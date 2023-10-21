@@ -43,13 +43,15 @@ function App() {
         const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(
           getRandomSearchQuery()
         )}`;
-        window.open(searchUrl, "_blank");
-        // if (newTab) {
-        //   newTab.focus();
-        //   newTab.onfocus = () => {
-        //     newTab.close();
-        //   };
-        // }
+        const newTab = window.open(searchUrl, "_blank");
+        if (newTab) {
+          newTab.focus();
+          newTab.onfocus = () => {
+            setTimeout(() => {
+              newTab.close();
+            }, 2000);
+          };
+        }
       }, i * delayTimeInt * 1000);
       searchTimeouts.push(timeoutId);
     }
