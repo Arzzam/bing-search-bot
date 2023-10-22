@@ -22,7 +22,7 @@ Bing Search Bot is a simple web application built using React that automates Bin
 
 4. Click on **Stop Searches** to halt the ongoing searches.
 5. Click on **Close all Tabs** to close all the opened search result tabs in one click.
-6. The application will be accessible at [**`https://auto-search-arzzam.vercel.app/`**](https://auto-search-arzzam.vercel.app/)
+6. The application will be accessible at [**`https://arzzam-bing-search-bot.vercel.app/`**](https://arzzam-bing-search-bot.vercel.app/)
 
 ## Contributing
 
