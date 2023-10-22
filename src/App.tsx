@@ -1,11 +1,18 @@
 import { useEffect, useState } from 'react';
 import { getAllSearchQueries } from './client';
 import Input from './Input';
+import Button from './Button';
 
 function App() {
   const [numSearches, setNumSearches] = useState<string>('10');
-  const [delayTime, setDelayTime] = useState<string>('5');
+  const [delayTime, setDelayTime] = useState<string>('4');
   const [data, setData] = useState<string[]>([]);
+  const [searchQueryWindowSet, setSearchQueryWindowSet] = useState<Set<Window>>(
+    new Set<Window>()
+  );
+  const [searchQuerySet, setSearchQuerySet] = useState<Set<string>>(
+    new Set<string>()
+  );
 
   async function fetchSearchQueries() {
     const searchQueriesObject = await getAllSearchQueries();
@@ -22,11 +29,14 @@ function App() {
   function getRandomSearchQuery(): string {
     const randomIndex = Math.floor(Math.random() * data.length);
     console.log('data random index', data[randomIndex]);
-    return data[randomIndex];
+    if (searchQuerySet.has(data[randomIndex])) {
+      return getRandomSearchQuery();
+    } else {
+      return data[randomIndex];
+    }
   }
 
   let searchTimeouts: NodeJS.Timeout[] = [];
-  let newTab: Window | null;
 
   const scheduleSearches = () => {
     if (!numSearches || !delayTime) {
@@ -46,8 +56,11 @@ function App() {
         const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(
           getRandomSearchQuery()
         )}`;
-        newTab?.close();
-        newTab = window.open(searchUrl, '_blank');
+        const newTab = window.open(searchUrl, '_blank');
+        if (newTab) {
+          setSearchQueryWindowSet((prev) => prev.add(newTab as Window));
+          setSearchQuerySet((prev) => prev.add(searchUrl));
+        }
       }, i * delayTimeInt * 1000);
       searchTimeouts.push(timeoutId);
     }
@@ -85,6 +98,12 @@ function App() {
     }
   };
 
+  const closeAllTabsHandler = () => {
+    searchQueryWindowSet.forEach((searchQuery) => {
+      searchQuery.close();
+    });
+  };
+
   return (
     <div className='font-sans flex flex-col items-center justify-center h-screen gap-4'>
       <h1 className='text-center text-4xl font-bold text-orange-300'>
@@ -109,10 +128,11 @@ function App() {
         onChange={handleDelayTimeChange}
         required
       />
-      <div className='button-grp'>
-        <button onClick={scheduleSearches}>Start Searches</button>
-        <button onClick={stopSearches}>Stop Searches</button>
+      <div className='flex justify-between gap-2 flex-row'>
+        <Button onClick={scheduleSearches}>Start Searches</Button>
+        <Button onClick={stopSearches}>Stop Searches</Button>
       </div>
+      <Button onClick={closeAllTabsHandler}>Close all Tabs</Button>
     </div>
   );
 }
