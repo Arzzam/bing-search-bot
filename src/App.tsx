@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { getAllSearchQueries } from './data/client';
 import Input from './components/Input';
 import Button from './components/Button';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [numSearches, setNumSearches] = useState<string>('10');
@@ -46,6 +48,7 @@ function App() {
 
     const numSearchesInt: number = parseInt(numSearches, 10);
     const delayTimeInt: number = parseInt(delayTime, 10);
+    toast(`Bing searches has been initiated with ${numSearchesInt} searches.`);
 
     searchTimeouts.forEach((timeoutId) => {
       clearTimeout(timeoutId);
@@ -67,7 +70,9 @@ function App() {
   };
 
   const stopSearches = () => {
-    alert('Stopping searches');
+    if (searchTimeouts.length > 0) {
+      toast("Stopping Searches");
+    }
     searchTimeouts.forEach((timeoutId) => {
       clearTimeout(timeoutId);
     });
@@ -102,10 +107,12 @@ function App() {
     searchQueryWindowSet.forEach((searchQuery) => {
       searchQuery.close();
     });
+    toast("All tabs are closed.")
   };
 
   return (
     <div className="font-sans flex flex-col items-center justify-center h-screen gap-4">
+      <ToastContainer />
       <h1 className="text-center text-4xl font-bold text-orange-300">
         Bing Search Bot
       </h1>
