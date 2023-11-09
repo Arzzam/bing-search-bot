@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { getAllSearchQueries } from './data/client';
 import Input from './components/Input';
 import Button from './components/Button';
@@ -127,36 +128,39 @@ function App() {
   };
 
   return (
-    <div className="font-sans flex flex-col items-center justify-center h-screen gap-4">
-      <ToastContainer />
-      <h1 className="text-center text-4xl font-bold text-orange-300">
-        Bing Search Bot
-      </h1>
-      <Input
-        label="Number of Searches:"
-        type="number"
-        id="numSearches"
-        value={numSearches}
-        min={1}
-        max={30}
-        onChange={handleNumSearchesChange}
-        required
-      />
-      <Input
-        label="Delay Time (in seconds):"
-        id="delayTime"
-        value={delayTime}
-        min={4}
-        max={20}
-        onChange={handleDelayTimeChange}
-        required
-      />
-      <div className="flex justify-between gap-2 flex-row">
-        <Button onClick={scheduleSearches}>Start Searches</Button>
-        <Button onClick={stopSearches}>Stop Searches</Button>
+    <>
+      <div className="font-sans flex flex-col items-center justify-center h-screen gap-4">
+        <ToastContainer />
+        <h1 className="text-center text-4xl font-bold text-orange-300">
+          Bing Search Bot
+        </h1>
+        <Input
+          label="Number of Searches:"
+          type="number"
+          id="numSearches"
+          value={numSearches}
+          min={1}
+          max={30}
+          onChange={handleNumSearchesChange}
+          required
+        />
+        <Input
+          label="Delay Time (in seconds):"
+          id="delayTime"
+          value={delayTime}
+          min={4}
+          max={20}
+          onChange={handleDelayTimeChange}
+          required
+        />
+        <div className="flex justify-between gap-2 flex-row">
+          <Button onClick={scheduleSearches}>Start Searches</Button>
+          <Button onClick={stopSearches}>Stop Searches</Button>
+        </div>
+        <Button onClick={closeAllTabsHandler}>Close all Tabs</Button>
       </div>
-      <Button onClick={closeAllTabsHandler}>Close all Tabs</Button>
-    </div>
+      <Analytics />
+    </>
   );
 }
 
