@@ -30,7 +30,6 @@ function App() {
 
   function getRandomSearchQuery(): string {
     const randomIndex = Math.floor(Math.random() * data.length);
-    console.log('data random index', data[randomIndex]);
     if (searchQuerySet.has(data[randomIndex])) {
       return getRandomSearchQuery();
     } else {
@@ -42,36 +41,46 @@ function App() {
 
   const scheduleSearches = () => {
     if (!numSearches || !delayTime) {
-      alert('Please enter both number of searches and delay time.');
+      toast.info('Please enter both number of searches and delay time.');
       return;
     }
-
-    const numSearchesInt: number = parseInt(numSearches, 10);
-    const delayTimeInt: number = parseInt(delayTime, 10);
-    toast(`Bing searches has been initiated with ${numSearchesInt} searches.`);
 
     searchTimeouts.forEach((timeoutId) => {
       clearTimeout(timeoutId);
     });
 
-    for (let i = 0; i < numSearchesInt; i++) {
-      const timeoutId = setTimeout(() => {
-        const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(
-          getRandomSearchQuery()
-        )}`;
-        const newTab = window.open(searchUrl, '_blank');
-        if (newTab) {
-          setSearchQueryWindowSet((prev) => prev.add(newTab as Window));
-          setSearchQuerySet((prev) => prev.add(searchUrl));
-        }
-      }, i * delayTimeInt * 1000);
-      searchTimeouts.push(timeoutId);
+    if (data && data.length > 0) {
+      const numSearchesInt: number = parseInt(numSearches, 10);
+      const delayTimeInt: number = parseInt(delayTime, 10);
+      toast(
+        `Bing searches has been initiated with ${numSearchesInt} searches.`
+      );
+
+      for (let i = 0; i < numSearchesInt; i++) {
+        const timeoutId = setTimeout(() => {
+          const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(
+            getRandomSearchQuery()
+          )}`;
+          const newTab = window.open(searchUrl, '_blank');
+          if (newTab) {
+            setSearchQueryWindowSet((prev) => prev.add(newTab as Window));
+            setSearchQuerySet((prev) => prev.add(searchUrl));
+          }
+        }, i * delayTimeInt * 1000);
+        searchTimeouts.push(timeoutId);
+      }
+    } else {
+      toast.error('No search queries found. Error in fetching data.');
     }
   };
 
   const stopSearches = () => {
+    if (searchTimeouts.length === 0) {
+      toast('No searches are running.');
+      return;
+    }
     if (searchTimeouts.length > 0) {
-      toast("Stopping Searches");
+      toast('Stopping Searches');
     }
     searchTimeouts.forEach((timeoutId) => {
       clearTimeout(timeoutId);
@@ -104,10 +113,17 @@ function App() {
   };
 
   const closeAllTabsHandler = () => {
+    if (searchQueryWindowSet.size < 1) {
+      toast('No tabs are open.');
+      return;
+    }
+    if (searchQueryWindowSet.size > 0) {
+      toast('All tabs are closed.');
+    }
     searchQueryWindowSet.forEach((searchQuery) => {
       searchQuery.close();
     });
-    toast("All tabs are closed.")
+    setSearchQueryWindowSet(new Set<Window>());
   };
 
   return (
