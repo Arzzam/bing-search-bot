@@ -59,9 +59,12 @@ function App() {
 
       for (let i = 0; i < numSearchesInt; i++) {
         const timeoutId = setTimeout(() => {
+          const searchQuery = getRandomSearchQuery();
           const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(
-            getRandomSearchQuery()
-          )}`;
+            searchQuery
+          )}&qs=n&form=QBRE&sp=-1&ghc=2&lq=0&pq=${encodeURIComponent(
+            searchQuery
+          )}&sc=11-28&sk=&ghpl=}`;
           const newTab = window.open(searchUrl, '_blank');
           if (newTab) {
             setSearchQueryWindowSet((prev) => prev.add(newTab as Window));
