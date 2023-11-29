@@ -148,7 +148,7 @@ function App() {
         label="Delay Time (in seconds):"
         id="delayTime"
         value={delayTime}
-        min={4}
+        min={6}
         max={20}
         onChange={handleDelayTimeChange}
         required
