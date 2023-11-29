@@ -30,7 +30,7 @@ function App() {
   }, []);
 
   function getRandomSearchQuery(): string {
-    const randomIndex = Math.floor(Math.random() * data.length);
+    const randomIndex = Math.floor(Math.random() * data.length + 1);
     if (searchQuerySet.has(data[randomIndex])) {
       return getRandomSearchQuery();
     } else {
@@ -60,12 +60,11 @@ function App() {
       for (let i = 0; i < numSearchesInt; i++) {
         const timeoutId = setTimeout(() => {
           const searchQuery = getRandomSearchQuery();
-          const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(
+          const searchUrl = `https://www.bing.com/search?pglt=2083&q=${encodeURIComponent(
             searchQuery
-          )}&qs=n&form=QBRE&sp=-1&ghc=2&lq=0&pq=${encodeURIComponent(
-            searchQuery
-          )}&sc=11-28&sk=&ghpl=}`;
-          const newTab = window.open(searchUrl, '_blank');
+          )}FORM=ANNTA1&PC=U531`;
+
+          const newTab = window.open(searchUrl, 'New Tab');
           if (newTab) {
             setSearchQueryWindowSet((prev) => prev.add(newTab as Window));
             setSearchQuerySet((prev) => prev.add(searchUrl));
