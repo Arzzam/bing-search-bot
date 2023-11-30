@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [numSearches, setNumSearches] = useState<string>('10');
-  const [delayTime, setDelayTime] = useState<string>('4');
+  const [delayTime, setDelayTime] = useState<string>('5');
   const [data, setData] = useState<string[]>([]);
   const [searchQueryWindowSet, setSearchQueryWindowSet] = useState<Set<Window>>(
     new Set<Window>()
@@ -62,9 +62,9 @@ function App() {
           const searchQuery = getRandomSearchQuery();
           const searchUrl = `https://www.bing.com/search?pglt=2083&q=${encodeURIComponent(
             searchQuery
-          )}FORM=ANNTA1&PC=U531`;
+          )}&FORM=ANNTA1&PC=U531`;
 
-          const newTab = window.open(searchUrl, 'New Tab');
+          const newTab = window.open(searchUrl, '_blank');
           if (newTab) {
             setSearchQueryWindowSet((prev) => prev.add(newTab as Window));
             setSearchQuerySet((prev) => prev.add(searchUrl));
@@ -150,7 +150,7 @@ function App() {
           label="Delay Time (in seconds):"
           id="delayTime"
           value={delayTime}
-          min={6}
+          min={5}
           max={20}
           onChange={handleDelayTimeChange}
           required
