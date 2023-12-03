@@ -68,7 +68,8 @@ function App() {
           searchQuery
         )}&FORM=ANNTA1&PC=U531`;
 
-        const newTab = window.open(searchUrl, '_blank');
+        const newTab =
+          isSearchingRef.current && window.open(searchUrl, '_blank');
         if (newTab) {
           setSearchQueryWindowSet((prev) => prev.add(newTab as Window));
           setSearchQuerySet((prev) => prev.add(searchUrl));
@@ -98,13 +99,9 @@ function App() {
       return;
     }
     if (searchQueryWindowSet.size > 0) {
-      toast('Upcoming all searches have been stopped.');
       isSearchingRef.current = false;
+      toast('Upcoming all searches have been stopped.');
     }
-    searchQueryWindowSet.forEach((searchQuery) => {
-      searchQuery.close();
-    });
-    setSearchQueryWindowSet(new Set<Window>());
   };
 
   // const handleDelayTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -146,7 +143,7 @@ function App() {
           id="numSearches"
           value={numSearches}
           min={1}
-          max={30}
+          max={50}
           onChange={handleNumSearchesChange}
           required
         />
