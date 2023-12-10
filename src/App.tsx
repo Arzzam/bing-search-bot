@@ -76,6 +76,7 @@ function App() {
         }
       }
       isSearchingRef.current = false;
+      toast.success('All searches have been completed.', { autoClose: false });
     } else {
       toast.error('No search queries found. Error in fetching data.');
     }
