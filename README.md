@@ -1,18 +1,18 @@
 # Bing Search Bot
 
-Bing Search Bot is a simple web application built using React that automates Bing searches based on random search queries. Users can specify the number of searches and the delay time between each search. The application opens new tabs in the browser, performs Bing searches with random queries, and allows users to stop the searches and close all opened tabs.
+Bing Search Bot is a simple web application built using React that automates Bing searches based on random search queries. Users can specify the number of searches. The application opens new tabs in the browser, performs Bing searches with random queries, and allows users to stop the searches and close all opened tabs.
 
 
 ## Usage
 
-1. Enter the **Number of Searches** (between 1 and 30) and **Delay Time** (between 4 and 20 seconds) in the input fields.
+1. Enter the **Number of Searches** (between 1 and 50) in the input field.
 2. Click on **Start Searches** to initiate automated Bing searches.
 3. Click on **Stop Searches** to halt the ongoing searches.
 4. Click on **Close all Tabs** to close all the opened search result tabs.
 
 ## Demo
 
-1. Enter the **Number of Searches** and **Delay Time** in the input fields.
+1. Enter the **Number of Searches** in the input fields.
    
    ![Alt text](src/assets/image.png)
 
@@ -22,7 +22,7 @@ Bing Search Bot is a simple web application built using React that automates Bin
 
 4. Click on **Stop Searches** to halt the ongoing searches.
 5. Click on **Close all Tabs** to close all the opened search result tabs in one click.
-6. The application will be accessible at [**`https://arzzam-bing-search-bot.vercel.app/`**](https://arzzam-bing-search-bot.vercel.app/)
+6. The application will be accessible at [**`https://bingsearchbot.arzzam.in/`**](https://bingsearchbot.arzzam.in/)
 
 ## Contributing
 
