@@ -11,7 +11,7 @@ const Input: React.FC<InputProps> = ({ label, ...rest }) => {
       <input
         {...rest}
         type='number'
-        className='w-48 p-2 text-base border border-[#fdba74] rounded-md focus:outline-none focus:ring-1 focus:ring-[#ffa13d]'
+        className='w-48 bg-[#242424] text-white p-2 text-base border border-[#fdba74] rounded-md focus:outline-none focus:ring-1 focus:ring-[#ffa13d]'
       />
     </div>
   );
